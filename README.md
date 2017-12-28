@@ -105,9 +105,9 @@ This is possible, but not the intent of this project. Please [CLICK HERE](https:
 
 ## Currently used tools
 
-- Angular 4.0.0
+- Angular 5.0.0
 - NodeJS 7.3.0
-- Angular-CLI 1.0.0
+- Angular-CLI 1.6.3
 - graphicsmagick
 
 ## Troubleshooting
