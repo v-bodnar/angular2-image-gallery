@@ -19,31 +19,25 @@ import {ImageService} from "../services/image.service"
         trigger('imageTransition', [
             state('enterFromRight', style({
                 opacity: 1,
-                transform: 'translate(0px, 0px)'
             })),
             state('enterFromLeft', style({
                 opacity: 1,
-                transform: 'translate(0px, 0px)'
             })),
             state('leaveToLeft', style({
                 opacity: 0,
-                transform: 'translate(-100px, 0px)'
             })),
             state('leaveToRight', style({
                 opacity: 0,
-                transform: 'translate(100px, 0px)'
             })),
             transition('* => enterFromRight', [
                 style({
                     opacity: 0,
-                    transform: 'translate(30px, 0px)'
                 }),
                 animate('250ms 500ms ease-in')
             ]),
             transition('* => enterFromLeft', [
                 style({
                     opacity: 0,
-                    transform: 'translate(-30px, 0px)'
                 }),
                 animate('250ms 500ms ease-in')
             ]),
@@ -121,6 +115,32 @@ export class ViewerComponent {
 
     public get rightArrowActive(): boolean {
         return this.currentIdx < this.images.length - 1
+    }
+
+    public getTransform(orientation) {
+        switch(orientation) {
+            case 2: {
+                return 'flip_horizontal';
+            }
+            case 3: {
+                return 'rotate(180deg)';
+            }
+            case 5: {
+                return 'transpose';
+            }
+            case 6: {
+                return 'rotate(90deg)';
+            }
+            case 7: {
+                return 'transverse';
+            }
+            case 8: {
+                return 'rotate(270deg)';
+            }
+            default: {
+                return '';
+            }
+        }
     }
 
     public pan(swipe: any) {
