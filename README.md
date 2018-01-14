@@ -14,6 +14,56 @@ Before using the gallery, you have to process all of your images that will be pa
 
 http://oidamo.de/angular2-image-gallery/
 
+### This version has few differences from original library 
+1. Changed dependencies for angular 5
+2. External json proovider is supposed to be used, no changes were made to convert.js
+3. Animation trasitions have bee changed
+4. 'orientation' property is supposed to be used for original image transform
+json example: 
+```
+{
+		"raw": {
+			"path": "http://localhost:8080/api/getImage/RAW/MjAxNy4wNi4yNiBMdWJsaW5cSU1HXzg3ODIuSlBH",
+			"width": 3000,
+			"height": 4000
+		},
+		"dominantColor": "#a09d9a",
+		"orientation": 8,
+		"preview_xxs": {
+			"path": "http://localhost:8080/api/getImage/XXS/MjAxNy4wNi4yNiBMdWJsaW5cSU1HXzg3ODIuSlBH",
+			"width": 225,
+			"height": 300
+		},
+		"preview_xs": {
+			"path": "http://localhost:8080/api/getImage/RAW/MjAxNy4wNi4yNiBMdWJsaW5cSU1HXzg3ODIuSlBH",
+			"width": 450,
+			"height": 600
+		},
+		"preview_s": {
+			"path": "http://localhost:8080/api/getImage/RAW/MjAxNy4wNi4yNiBMdWJsaW5cSU1HXzg3ODIuSlBH",
+			"width": 576,
+			"height": 768
+		},
+		"preview_m": {
+			"path": "http://localhost:8080/api/getImage/RAW/MjAxNy4wNi4yNiBMdWJsaW5cSU1HXzg3ODIuSlBH",
+			"width": 810,
+			"height": 1080
+		},
+		"preview_l": {
+			"path": "http://localhost:8080/api/getImage/RAW/MjAxNy4wNi4yNiBMdWJsaW5cSU1HXzg3ODIuSlBH",
+			"width": 1080,
+			"height": 1440
+		},
+		"preview_xl": {
+			"path": "http://localhost:8080/api/getImage/RAW/MjAxNy4wNi4yNiBMdWJsaW5cSU1HXzg3ODIuSlBH",
+			"width": 1620,
+			"height": 2160
+		}
+	}
+```
+5. rotation is applied only for raw(large) image, no rotation has been applied to thubnails as after resizig exif data could be missing. Css property image-orientation: from-image; could be used to apply rotation for thumbnails basig on exif
+6. Be sure to swap width/height when tag_orientation is 6 or 8 in your json, as size calculation has not been changed 
+
 ## How to use the gallery in your project
 ### Pre-requirements
 Install **node (>= 4.2.2)** and **graphicsmagick**: http://www.graphicsmagick.org/README.html#installation
@@ -23,7 +73,7 @@ Install **node (>= 4.2.2)** and **graphicsmagick**: http://www.graphicsmagick.or
 #### 1. Install angular2-image-gallery
 
 ```bash
-npm install angular2-image-gallery --save
+npm install git+https://github.com/v-bodnar/angular2-image-gallery.git --save
 ```
 
 #### 2. Import angular2-image-gallery in your Angular 2 module
@@ -59,8 +109,17 @@ import 'core-js/es6/set';
 
 import 'web-animations-js';
 ```
+#### 4. Define type scripts for compiling in your tsconfig.app.json 
+I'm new to Angular... it just didn't work for e without it
+```
+,
+  "include":[
+    "../src/**/*.ts",
+    "../node_modules/angular2-image-gallery/src/**/*.ts"
+  ]
+```
 
-#### 4. Run convert script
+#### 5. Run convert script
 
 ```bash
 node node_modules/angular2-image-gallery/convert.js <path/to/your/images>
@@ -77,7 +136,7 @@ Additional optional parameter to support multiple galleries. Add it if you want 
 
 `--gName=yourGalleryName` 
 
-#### 5. Embed gallery in your template
+#### 6. Embed gallery in your template
 
 ```javascript
 <gallery 
@@ -102,13 +161,6 @@ If you'd like to know how you could fetch your images from an external data sour
 
 This is possible, but not the intent of this project. Please [CLICK HERE](https://github.com/BenjaminBrandmeier/angular2-image-gallery/blob/master/docs/ownJSON.md)
 
-
-## Currently used tools
-
-- Angular 5.0.0
-- NodeJS 7.3.0
-- Angular-CLI 1.6.3
-- graphicsmagick
 
 ## Troubleshooting
 
