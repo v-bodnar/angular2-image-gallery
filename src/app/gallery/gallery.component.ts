@@ -208,7 +208,7 @@ export class GalleryComponent implements OnInit, OnDestroy, OnChanges {
         let imageElements = this.imageElements.toArray()
 
         if (image['galleryImageLoaded'] ||
-            (imageElements.length > 0 && this.isScrolledIntoView(imageElements[imageCounter].nativeElement))) {
+            (imageElements.length > 0 && imageElements.length > imageCounter  && this.isScrolledIntoView(imageElements[imageCounter].nativeElement))) {
             image['galleryImageLoaded'] = true
             image['srcAfterFocus'] = image[this.minimalQualityCategory]['path']
         }
