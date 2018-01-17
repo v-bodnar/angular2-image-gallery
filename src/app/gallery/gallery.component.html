@@ -1,5 +1,6 @@
 <div #galleryContainer class="galleryContainer">
-    <div class="innerGalleryContainer">
+    <div *ngIf="gallery.length === 0"> No images to display for given filter</div>
+    <div *ngIf="gallery.length !== 0" class="innerGalleryContainer">
         <div *ngFor='let imgrow of gallery; let i = index'
              class="imagerow"
              [style.margin-bottom.px]="calcImageMargin()">
