@@ -39,3 +39,23 @@
     width: 0px;
     bottom: 120px;
 }
+.info-btn{
+    width: 24px;
+    height: 24px;
+    background: none;
+    padding: 2px;
+    top: -34px;
+    left: 10px;
+    display: inline-block;
+    position: relative;
+}
+.download-btn{
+    width: 24px;
+    height: 24px;
+    background: none;
+    padding: 2px;
+    top: -34px;
+    left: 10px;
+    display: inline-block;
+    position: relative;
+}

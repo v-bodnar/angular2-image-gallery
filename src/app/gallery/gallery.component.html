@@ -3,16 +3,25 @@
     <div *ngIf="gallery.length !== 0" class="innerGalleryContainer">
         <div *ngFor='let imgrow of gallery; let i = index'
              class="imagerow"
-             [style.margin-bottom.px]="calcImageMargin()">
-            <img #imageElement
-                 *ngFor='let img of imgrow; let j = index'
-                 class="thumbnail"
-                 [style.width.px]="img['width']"
-                 [style.height.px]="img['height']"
-                 (click)="openImageViewer(img)"
-                 [src]="img['srcAfterFocus']"
-                 [style.background]="img.dominantColor"
-                 [style.margin-right.px]="calcImageMargin()"/>
+             [style.margin-bottom.px]="1">
+            <div *ngFor='let img of imgrow; let j = index'
+                 [style.width.px]="img['width']+1"
+                 [style.height.px]="img['height']+1">
+                <img #imageElement
+                     class="thumbnail"
+                     [style.width.px]="img['width']"
+                     [style.height.px]="img['height']"
+                     (click)="openImageViewer(img)"
+                     [src]="img['srcAfterFocus']"
+                     [style.background]="img.dominantColor"
+                     [style.margin-right.px]="calcImageMargin()"/>
+                <button *ngIf="img['name']" [style.margin-right.px]="calcImageMargin()" type="button" class="btn btn-secondary info-btn" aria-label="Info"  data-toggle="popover" title="Exif Data" data-html = "true" attr.data-content="{{parseExifData(img['exifData'])}}">
+                    <i class="fa fa-info-circle fa-inverse" aria-hidden="true"></i>
+                </button>
+                <button *ngIf="img['name']" [style.margin-right.px]="calcImageMargin()" type="button" class="btn btn-secondary download-btn" aria-label="Download" (click)="downloadImage(img['raw']['path'], img['name'])">
+                    <i class="fa fa-download fa-inverse" aria-hidden="true"></i>
+                </button>
+            </div>
         </div>
     </div>
 </div>

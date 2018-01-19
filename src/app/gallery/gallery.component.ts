@@ -6,6 +6,8 @@ import {Http, Response} from "@angular/http"
 import {ImageService} from "../services/image.service"
 import {Subscription} from 'rxjs/Subscription'
 import 'rxjs/add/operator/map'
+declare var jquery:any;
+declare var $ :any;
 
 @Component({
     selector: 'gallery',
@@ -23,11 +25,11 @@ export class GalleryComponent implements OnInit, OnDestroy, OnChanges {
     @ViewChild('galleryContainer') galleryContainer: ElementRef
     @ViewChildren('imageElement') imageElements: QueryList<any>
 
-    @HostListener('window:scroll', ['$event']) triggerCycle(event : any) {
+    @HostListener('window:scroll', ['$event']) triggerCycle(event: any) {
         this.scaleGallery()
     }
 
-    @HostListener('window:resize', ['$event']) windowResize(event : any) {
+    @HostListener('window:resize', ['$event']) windowResize(event: any) {
         this.render()
     }
 
@@ -45,7 +47,8 @@ export class GalleryComponent implements OnInit, OnDestroy, OnChanges {
     public ngOnInit() {
         this.fetchDataAndRender()
         this.viewerSubscription = this.ImageService.showImageViewerChanged$
-            .subscribe((visibility: boolean) => this.viewerChange.emit(visibility))
+            .subscribe((visibility: boolean) => this.viewerChange.emit(visibility));
+
     }
 
     public ngOnChanges(changes: SimpleChanges) {
@@ -62,7 +65,7 @@ export class GalleryComponent implements OnInit, OnDestroy, OnChanges {
         }
     }
 
-    public openImageViewer(img  : any) {
+    public openImageViewer(img: any) {
         this.ImageService.updateImages(this.images)
         this.ImageService.updateSelectedImageIndex(this.images.indexOf(img))
         this.ImageService.showImageViewer(true)
@@ -73,8 +76,8 @@ export class GalleryComponent implements OnInit, OnDestroy, OnChanges {
 
         if (!this.providedMetadataUri) {
             this.imageDataCompletePath = this.providedGalleryName != '' ?
-            this.imageDataStaticPath + this.providedGalleryName + '/' + this.dataFileName :
-            this.imageDataStaticPath + this.dataFileName
+                this.imageDataStaticPath + this.providedGalleryName + '/' + this.dataFileName :
+                this.imageDataStaticPath + this.dataFileName
         }
 
         this.http.get(this.imageDataCompletePath)
@@ -92,6 +95,7 @@ export class GalleryComponent implements OnInit, OnDestroy, OnChanges {
                     // twice, single leads to different strange browser behaviour
                     this.render()
                     this.render()
+                    $('[data-toggle="popover"]').popover()
                 },
                 err => {
                     this.providedMetadataUri ?
@@ -122,6 +126,34 @@ export class GalleryComponent implements OnInit, OnDestroy, OnChanges {
         }
 
         this.scaleGallery()
+    }
+
+    public downloadImage(path:string, name:string){
+        this.ImageService.downloadImage(path)
+            .subscribe(imageFile => {
+                let downloadUrl= window.URL.createObjectURL(imageFile);
+                let anchor = document.createElement("a");
+                anchor.download = name;
+                anchor.href = downloadUrl;
+                anchor.click();
+            });
+    }
+
+    public parseExifData(exifData: any): string {
+        return 'Camera Model: ' + exifData['cameraModel'] + '<br/>' +
+            'Created: ' + this.parseDate(exifData['recordedDate']) + '<br/>' +
+            'Size: ' + exifData['width'] + 'x' + exifData['height'] + '<br/>' +
+            'Orientation: ' + exifData['orientation'] + '<br/>';
+    }
+
+    private parseDate(timestamp: number) {
+        let date = new Date(timestamp);
+        return date.getFullYear() + "-" + this.pad(date.getMonth() + 1, 2) + "-" + this.pad(date.getDate(),2) + " " + date.getHours() + ":" + date.getMinutes();
+    }
+
+    private pad(num, size) {
+        let s = "000000000" + num;
+        return s.substr(s.length - size);
     }
 
     private shouldAddCandidate(imgRow: any[], candidate: any): boolean {
@@ -181,7 +213,7 @@ export class GalleryComponent implements OnInit, OnDestroy, OnChanges {
             if (imgRow !== this.gallery[this.gallery.length - 1]) {
                 let ratio = (this.getGalleryWidth() - (imgRow.length - 1) * this.calcImageMargin()) / originalRowWidth
 
-                imgRow.forEach((img : any) => {
+                imgRow.forEach((img: any) => {
                     img['width'] = img[this.minimalQualityCategory]['width'] * ratio
                     img['height'] = img[this.minimalQualityCategory]['height'] * ratio
                     maximumGalleryImageHeight = Math.max(maximumGalleryImageHeight, img['height'])
@@ -189,7 +221,7 @@ export class GalleryComponent implements OnInit, OnDestroy, OnChanges {
                 })
             }
             else {
-                imgRow.forEach((img : any) => {
+                imgRow.forEach((img: any) => {
                     img.width = img[this.minimalQualityCategory]['width']
                     img.height = img[this.minimalQualityCategory]['height']
                     maximumGalleryImageHeight = Math.max(maximumGalleryImageHeight, img['height'])
@@ -207,11 +239,11 @@ export class GalleryComponent implements OnInit, OnDestroy, OnChanges {
         this.ChangeDetectorRef.detectChanges()
     }
 
-    private checkForAsyncLoading(image : any, imageCounter: number) {
+    private checkForAsyncLoading(image: any, imageCounter: number) {
         let imageElements = this.imageElements.toArray()
 
         if (image['galleryImageLoaded'] ||
-            (imageElements.length > 0 && imageElements.length > imageCounter  && this.isScrolledIntoView(imageElements[imageCounter].nativeElement))) {
+            (imageElements.length > 0 && imageElements.length > imageCounter && this.isScrolledIntoView(imageElements[imageCounter].nativeElement))) {
             image['galleryImageLoaded'] = true
             image['srcAfterFocus'] = image[this.minimalQualityCategory]['path']
         }
@@ -220,7 +252,7 @@ export class GalleryComponent implements OnInit, OnDestroy, OnChanges {
         }
     }
 
-    private isScrolledIntoView(element : any) {
+    private isScrolledIntoView(element: any) {
         let elementTop = element.getBoundingClientRect().top
         let elementBottom = element.getBoundingClientRect().bottom
 
