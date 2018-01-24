@@ -140,10 +140,19 @@ export class GalleryComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     public parseExifData(exifData: any): string {
-        return 'Camera Model: ' + exifData['cameraModel'] + '<br/>' +
-            'Created: ' + this.parseDate(exifData['recordedDate']) + '<br/>' +
-            'Size: ' + exifData['width'] + 'x' + exifData['height'] + '<br/>' +
-            'Orientation: ' + exifData['orientation'] + '<br/>';
+        if(exifData === null || exifData=== undefined){
+            return null;
+        }
+        let exifHtml:string = "";
+        if(exifData['cameraModel'])
+            exifHtml += 'Camera Model: ' + exifData['cameraModel'] + '<br/>';
+        if(exifData['cameraModel'])
+            exifHtml += 'Created: ' + this.parseDate(exifData['recordedDate']) + '<br/>';
+        if(exifData['cameraModel'])
+            exifHtml += 'Size: ' + exifData['width'] + 'x' + exifData['height'] + '<br/>'
+        if(exifData['cameraModel'])
+            exifHtml += 'Orientation: ' + exifData['orientation'] + '<br/>';
+        return exifHtml;
     }
 
     private parseDate(timestamp: number) {
