@@ -9,6 +9,8 @@ export class ImagePipe implements PipeTransform {
   constructor(private http: HttpClient) {}
 
   transform(url: string) {
+    if(url === "")
+      return url;
     return this.http.get(url, {responseType: "blob"}) // specify that response should be treated as blob data
       .switchMap(blob => {
         // return new observable which emits a base64 string when blob is converted to base64

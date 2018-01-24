@@ -12,7 +12,7 @@
                      [style.width.px]="img['width']"
                      [style.height.px]="img['height']"
                      (click)="openImageViewer(img)"
-                     [src]="img['srcAfterFocus']"
+                     [src]="(img['srcAfterFocus'] | image) | async"
                      [style.background]="img.dominantColor"
                      [style.margin-right.px]="calcImageMargin()"/>
                 <button *ngIf="img['name'] && parseExifData(img['exifData'])" [style.margin-right.px]="calcImageMargin()" type="button" class="btn btn-secondary info-btn" aria-label="Info"  data-toggle="popover" title="Exif Data" data-html = "true" attr.data-content="{{parseExifData(img['exifData'])}}">

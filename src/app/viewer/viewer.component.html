@@ -19,13 +19,13 @@
              class="image"
              [class.active]="img['active']"
              [@imageTransition]="img['transition']"
-             [style.background-image]="img['viewerImageLoaded'] ? 'url('+img[categorySelected]['path']+')' : Math.abs(currentIdx-j) <=1 ? 'url('+img['preview_xxs']['path']+')' : ''"
+             [style.background-image]="img['viewerImageLoaded'] ? 'url('+((img[categorySelected]['path'] | image) | async) +')' : Math.abs(currentIdx-j) <=1 ? 'url('+((img['preview_xxs']['path'] | image) | async)+')' : ''"
              [style.left]="transform+'px'"
              [style.transform]="getTransform(img['orientation'])"></div>
 
         <img *ngFor='let img of images; let j = index'
              class="preloading-image"
              (load)="imageLoaded(img)"
-             src="{{ Math.abs(currentIdx-j) <=1 ? (img[categorySelected]['path'] | image) : ''}}"/>
+             src="{{(( Math.abs(currentIdx-j) <=1 ? img[categorySelected]['path'] : '') | image) | async}}"/>
     </div>
 </div>
