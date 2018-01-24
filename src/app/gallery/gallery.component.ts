@@ -1,11 +1,12 @@
 import {
-    Component, ViewChild, ElementRef, HostListener, ViewChildren,
-    ChangeDetectorRef, QueryList, OnInit, Input, SimpleChanges, OnChanges, Output, EventEmitter, OnDestroy
-} from "@angular/core"
-import {Http, Response} from "@angular/http"
-import {ImageService} from "../services/image.service"
+    ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, QueryList,
+    SimpleChanges, ViewChild, ViewChildren
+} from '@angular/core'
+import {ImageService} from '../services/image.service'
 import {Subscription} from 'rxjs/Subscription'
 import 'rxjs/add/operator/map'
+import {HttpClient} from '@angular/common/http';
+
 declare var jquery:any;
 declare var $ :any;
 
@@ -41,7 +42,7 @@ export class GalleryComponent implements OnInit, OnDestroy, OnChanges {
     public minimalQualityCategory = 'preview_xxs'
     public viewerSubscription: Subscription
 
-    constructor(public ImageService: ImageService, public http: Http, public ChangeDetectorRef: ChangeDetectorRef) {
+    constructor(public ImageService: ImageService, public http: HttpClient, public ChangeDetectorRef: ChangeDetectorRef) {
     }
 
     public ngOnInit() {
@@ -81,10 +82,9 @@ export class GalleryComponent implements OnInit, OnDestroy, OnChanges {
         }
 
         this.http.get(this.imageDataCompletePath)
-            .map((res: Response) => res.json())
             .subscribe(
                 data => {
-                    this.images = data
+                    this.images = (<any>data)
                     this.ImageService.updateImages(this.images)
 
                     this.images.forEach((image) => {
