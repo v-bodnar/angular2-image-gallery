@@ -15,10 +15,10 @@
                      [src]="(img['srcAfterFocus'] | image) | async"
                      [style.background]="img.dominantColor"
                      [style.margin-right.px]="calcImageMargin()"/>
-                <button *ngIf="img['name'] && parseExifData(img['exifData'])" [style.margin-right.px]="calcImageMargin()" type="button" class="btn btn-secondary info-btn" aria-label="Info"  data-toggle="popover" title="Exif Data" data-html = "true" attr.data-content="{{parseExifData(img['exifData'])}}">
+                <button *ngIf="img['name'] && parseExifData(img['exifData'])" [style.margin-right.px]="calcImageMargin()" type="button" class="btn btn-secondary info-btn" aria-label="Info"  data-toggle="popover" title="Exif Data" data-html = "true" attr.data-content="{{parseExifData(img)}}">
                     <i class="fa fa-info-circle fa-inverse" aria-hidden="true"></i>
                 </button>
-                <button *ngIf="img['name'] && parseExifData(img['exifData'])" [style.margin-right.px]="calcImageMargin()" type="button" class="btn btn-secondary download-btn" aria-label="Download" (click)="downloadImage(img['raw']['path'], img['name'])">
+                <button *ngIf="img['name']" [style.margin-right.px]="calcImageMargin()" type="button" class="btn btn-secondary download-btn" aria-label="Download" (click)="downloadImage(img['raw']['path'], img['name'])">
                     <i class="fa fa-download fa-inverse" aria-hidden="true"></i>
                 </button>
             </div>

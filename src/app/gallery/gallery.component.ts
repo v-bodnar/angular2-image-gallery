@@ -139,7 +139,9 @@ export class GalleryComponent implements OnInit, OnDestroy, OnChanges {
             });
     }
 
-    public parseExifData(exifData: any): string {
+    public parseExifData(img: any): string {
+        let exifData: any = img['exifData'];
+        let tags: any[] = img['tags'];
         if(exifData === null || exifData=== undefined){
             return null;
         }
@@ -152,6 +154,12 @@ export class GalleryComponent implements OnInit, OnDestroy, OnChanges {
             exifHtml += 'Size: ' + exifData['width'] + 'x' + exifData['height'] + '<br/>'
         if(exifData['cameraModel'])
             exifHtml += 'Orientation: ' + exifData['orientation'] + '<br/>';
+        if(tags && tags.length != 0){
+            exifHtml += 'tags';
+            for(let tag of tags){
+                exifHtml += '<span class="badge badge-info"> + tag.name + </span>'
+            }
+        }
         return exifHtml;
     }
 
