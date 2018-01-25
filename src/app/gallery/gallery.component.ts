@@ -157,7 +157,7 @@ export class GalleryComponent implements OnInit, OnDestroy, OnChanges {
         if(tags && tags.length != 0){
             exifHtml += 'tags';
             for(let tag of tags){
-                exifHtml += '<span class="badge badge-info"> + tag.name + </span>'
+                exifHtml += '<span class="badge badge-info">' + tag.name + '</span>'
             }
         }
         return exifHtml;
