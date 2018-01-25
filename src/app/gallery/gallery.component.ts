@@ -155,7 +155,7 @@ export class GalleryComponent implements OnInit, OnDestroy, OnChanges {
         if(exifData['cameraModel'])
             exifHtml += 'Orientation: ' + exifData['orientation'] + '<br/>';
         if(tags && tags.length != 0){
-            exifHtml += 'tags';
+            exifHtml += 'tags: ';
             for(let tag of tags){
                 exifHtml += '<span class="badge badge-info">' + tag.name + '</span>'
             }
